@@ -50,6 +50,13 @@
             border: none;
             border-radius: 5px;
         }
+        #result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #52008c; /* لون الخلفية للنتيجة */
+            border-radius: 10px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -69,7 +76,8 @@
             <option value="pdf">PDF</option>
         </select>
         <br>
-        <button onclick="convertFile()">حول الملف</button>
+        <button onclick="convertFile()" id="convertButton">حول الملف</button>
+        <div id="result"></div>
     </div>
 
     <script>
@@ -78,20 +86,32 @@
             const formatSelect = document.getElementById('formatSelect');
             const file = fileInput.files[0];
             const format = formatSelect.value;
+            const resultDiv = document.getElementById('result');
+            const convertButton = document.getElementById('convertButton');
 
             if (!file) {
                 alert(document.body.lang === 'ar' ? 'يرجى تحميل ملف أولاً.' : 'Please upload a file first.');
                 return;
             }
 
-            alert(document.body.lang === 'ar' ? `سيتم تحويل الملف إلى صيغة ${format}.` : `The file will be converted to ${format}.`);
-            // يمكن إضافة كود تحويل الملف باستخدام خدمة أو مكتبة خارجية هنا
+            // تغيير نص الزر
+            convertButton.textContent = document.body.lang === 'ar' ? 'حول الملف أو الصورة' : 'Convert File or Image';
+
+            // عرض النتيجة تحت الزر
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = document.body.lang === 'ar' 
+                ? `تم تحويل الملف إلى صيغة ${format} بنجاح.` 
+                : `The file has been successfully converted to ${format}.`;
+
+            // هنا يمكن إضافة كود لتحويل الملف باستخدام مكتبة خارجية أو API للتحويل
         }
 
         function switchLanguage(lang) {
             const content = document.getElementById('content');
             const flagEn = document.getElementById('flag-en');
             const flagAr = document.getElementById('flag-ar');
+            const convertButton = document.getElementById('convertButton');
+            const resultDiv = document.getElementById('result');
 
             if (lang === 'en') {
                 document.body.lang = 'en';
@@ -108,7 +128,8 @@
                         <option value="pdf">PDF</option>
                     </select>
                     <br>
-                    <button onclick="convertFile()">Convert File</button>
+                    <button onclick="convertFile()" id="convertButton">Convert File</button>
+                    <div id="result" style="display: none;"></div>
                 `;
             } else {
                 document.body.lang = 'ar';
@@ -125,7 +146,8 @@
                         <option value="pdf">PDF</option>
                     </select>
                     <br>
-                    <button onclick="convertFile()">حول الملف</button>
+                    <button onclick="convertFile()" id="convertButton">حول الملف</button>
+                    <div id="result" style="display: none;"></div>
                 `;
             }
         }
