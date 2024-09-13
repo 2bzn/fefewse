@@ -57,6 +57,11 @@
             border-radius: 10px;
             display: none;
         }
+        #downloadLink {
+            margin-top: 10px;
+            display: block;
+            color: #00ffea;
+        }
     </style>
 </head>
 <body>
@@ -97,21 +102,29 @@
             // تغيير نص الزر
             convertButton.textContent = document.body.lang === 'ar' ? 'حول الملف أو الصورة' : 'Convert File or Image';
 
-            // عرض النتيجة تحت الزر
-            resultDiv.style.display = 'block';
-            resultDiv.innerHTML = document.body.lang === 'ar' 
-                ? `تم تحويل الملف إلى صيغة ${format} بنجاح.` 
-                : `The file has been successfully converted to ${format}.`;
+            // محاكاة عملية التحويل (هنا يجب استخدام خدمة حقيقية للتحويل)
+            setTimeout(() => {
+                const resultMessage = document.body.lang === 'ar'
+                    ? `تم تحويل الملف إلى صيغة ${format} بنجاح.`
+                    : `The file has been successfully converted to ${format}.`;
 
-            // هنا يمكن إضافة كود لتحويل الملف باستخدام مكتبة خارجية أو API للتحويل
+                // عرض النتيجة تحت الزر
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `${resultMessage} <br>`;
+
+                // إنشاء رابط تنزيل وهمي (للتمثيل فقط)
+                const downloadLink = document.createElement('a');
+                downloadLink.href = '#'; // يجب أن يكون الرابط للرابط الفعلي للملف المحول
+                downloadLink.textContent = document.body.lang === 'ar' ? 'انقر هنا لتنزيل الملف' : 'Click here to download the file';
+                downloadLink.id = 'downloadLink';
+                resultDiv.appendChild(downloadLink);
+            }, 1000); // وقت التأخير لمحاكاة عملية التحويل
         }
 
         function switchLanguage(lang) {
             const content = document.getElementById('content');
             const flagEn = document.getElementById('flag-en');
             const flagAr = document.getElementById('flag-ar');
-            const convertButton = document.getElementById('convertButton');
-            const resultDiv = document.getElementById('result');
 
             if (lang === 'en') {
                 document.body.lang = 'en';
