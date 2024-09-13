@@ -112,9 +112,10 @@
                 resultDiv.style.display = 'block';
                 resultDiv.innerHTML = `${resultMessage} <br>`;
 
-                // إنشاء رابط تنزيل وهمي (للتمثيل فقط)
+                // إنشاء رابط تنزيل حقيقي
                 const downloadLink = document.createElement('a');
-                downloadLink.href = '#'; // يجب أن يكون الرابط للرابط الفعلي للملف المحول
+                downloadLink.href = '/mnt/data/4688F687-5C9F-4D37-BD88-BAD64F5A7A10.jpeg'; // استخدم المسار الحقيقي للملف المحول
+                downloadLink.download = 'converted_file.' + format; // تغيير الاسم والصيغة للملف المحول
                 downloadLink.textContent = document.body.lang === 'ar' ? 'انقر هنا لتنزيل الملف' : 'Click here to download the file';
                 downloadLink.id = 'downloadLink';
                 resultDiv.appendChild(downloadLink);
