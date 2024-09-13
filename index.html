@@ -62,6 +62,12 @@
             display: block;
             color: #00ffea;
         }
+        #filePreview {
+            margin-top: 20px;
+            max-width: 300px;
+            max-height: 300px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -83,6 +89,7 @@
         <br>
         <button onclick="convertFile()" id="convertButton">حول الملف</button>
         <div id="result"></div>
+        <img id="filePreview" alt="File Preview">
     </div>
 
     <script>
@@ -118,8 +125,26 @@
                 downloadLink.download = 'converted_file.' + format; // تغيير الاسم والصيغة للملف المحول
                 downloadLink.textContent = document.body.lang === 'ar' ? 'انقر هنا لتنزيل الملف' : 'Click here to download the file';
                 downloadLink.id = 'downloadLink';
+                downloadLink.onclick = showFilePreview;
                 resultDiv.appendChild(downloadLink);
             }, 1000); // وقت التأخير لمحاكاة عملية التحويل
+        }
+
+        function showFilePreview() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            const filePreview = document.getElementById('filePreview');
+
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    filePreview.src = e.target.result;
+                    filePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert(document.body.lang === 'ar' ? 'نوع الملف غير مدعوم للمعاينة.' : 'File type not supported for preview.');
+            }
         }
 
         function switchLanguage(lang) {
@@ -144,6 +169,7 @@
                     <br>
                     <button onclick="convertFile()" id="convertButton">Convert File</button>
                     <div id="result" style="display: none;"></div>
+                    <img id="filePreview" alt="File Preview" style="display: none; max-width: 300px; max-height: 300px;">
                 `;
             } else {
                 document.body.lang = 'ar';
@@ -162,6 +188,7 @@
                     <br>
                     <button onclick="convertFile()" id="convertButton">حول الملف</button>
                     <div id="result" style="display: none;"></div>
+                    <img id="filePreview" alt="معاينة الملف" style="display: none; max-width: 300px; max-height: 300px;">
                 `;
             }
         }
