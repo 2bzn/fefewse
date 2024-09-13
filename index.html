@@ -7,16 +7,30 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            background-color: #2c003e; /* لون بنفسجي داكن */
+            color: white;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            flex-direction: column;
+            position: relative;
+        }
+        .language-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .language-switcher img {
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            margin-left: 10px;
         }
         .container {
-            background-color: white;
+            background-color: #3e0059; /* لون أفتح قليلاً للبنفسجي */
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -31,7 +45,7 @@
             cursor: pointer;
         }
         button {
-            background-color: #4CAF50;
+            background-color: #6200ea; /* لون الزر بنفسجي */
             color: white;
             border: none;
             border-radius: 5px;
@@ -39,7 +53,12 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="language-switcher">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg" alt="English" id="flag-en" onclick="switchLanguage('en')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0d/Flag_of_Saudi_Arabia.svg" alt="Arabic" id="flag-ar" onclick="switchLanguage('ar')" style="display: none;">
+    </div>
+
+    <div class="container" id="content">
         <h1>محول صيغ الملفات والصور</h1>
         <input type="file" id="fileInput">
         <br>
@@ -61,12 +80,54 @@
             const format = formatSelect.value;
 
             if (!file) {
-                alert('يرجى تحميل ملف أولاً.');
+                alert(document.body.lang === 'ar' ? 'يرجى تحميل ملف أولاً.' : 'Please upload a file first.');
                 return;
             }
 
-            alert(`سيتم تحويل الملف إلى صيغة ${format}.`); 
-            // هنا يمكن إضافة كود لتفعيل عملية التحويل باستخدام مكتبة خارجية أو خدمة عبر الإنترنت
+            alert(document.body.lang === 'ar' ? `سيتم تحويل الملف إلى صيغة ${format}.` : `The file will be converted to ${format}.`);
+            // يمكن إضافة كود تحويل الملف باستخدام خدمة أو مكتبة خارجية هنا
+        }
+
+        function switchLanguage(lang) {
+            const content = document.getElementById('content');
+            const flagEn = document.getElementById('flag-en');
+            const flagAr = document.getElementById('flag-ar');
+
+            if (lang === 'en') {
+                document.body.lang = 'en';
+                flagEn.style.display = 'none';
+                flagAr.style.display = 'inline';
+                content.innerHTML = `
+                    <h1>File and Image Converter</h1>
+                    <input type="file" id="fileInput">
+                    <br>
+                    <label for="formatSelect">Choose the target format:</label>
+                    <select id="formatSelect">
+                        <option value="jpg">JPG</option>
+                        <option value="png">PNG</option>
+                        <option value="pdf">PDF</option>
+                    </select>
+                    <br>
+                    <button onclick="convertFile()">Convert File</button>
+                `;
+            } else {
+                document.body.lang = 'ar';
+                flagEn.style.display = 'inline';
+                flagAr.style.display = 'none';
+                content.innerHTML = `
+                    <h1>محول صيغ الملفات والصور</h1>
+                    <input type="file" id="fileInput">
+                    <br>
+                    <label for="formatSelect">اختر الصيغة المستهدفة:</label>
+                    <select id="formatSelect">
+                        <option value="jpg">JPG</option>
+                        <option value="png">PNG</option>
+                        <option value="pdf">PDF</option>
+                    </select>
+                    <br>
+                    <button onclick="convertFile()">حول الملف</button>
+                `;
+            }
         }
     </script>
 </body>
